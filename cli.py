@@ -4,15 +4,15 @@
 # @Link    : http://nazrul.me/
 # @Version : $Id$
 # All imports here
+import asyncio
+import sys
+
 from helpers import get_parser
 from helpers import run
 from helpers import setup_parser
 
-import asyncio
-import sys
 
-
-__author__ = 'Md Nazrul Islam'
+__author__ = "Md Nazrul Islam"
 
 loop = asyncio.get_event_loop()
 loop.set_debug(True)
@@ -23,7 +23,7 @@ async def main():
     parser = get_parser()
 
     parsed_args = vars(setup_parser(parser))
-    parsed_args['loop'] = loop
+    parsed_args["loop"] = loop
 
     await run(parsed_args)
 
