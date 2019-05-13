@@ -5,16 +5,33 @@
 # @Version : $Id$
 # All imports here
 import argparse
+import enum
 import importlib
 import inspect
 import sys
 import typing
 from collections import deque
 
-import six
-
 
 __author__ = "Md Nazrul Islam (email2nazrul@gmail.com)"
+
+
+class FHIR_RELEASES(enum.Enum):
+    """ """
+    R4 = "R4"
+    STU3 = "STU3"
+    DSTU2 = "DSTU2"
+
+
+class FHIR_INFO(enum.Enum):
+    """ """
+
+    BASE_URL = "http://hl7.org/fhir"
+    EXT = ".zip"
+    FHIR_DEFINITION = "definitions.json" + EXT
+    FHIR_EXAMPLE = "examples-json" + EXT
+    FHIR_SCHEMAS = "fhir.schema.json" + EXT
+
 
 ArgumentParserType = typing.NewType("ArgumentParser", argparse.ArgumentParser)
 ArgumentParserNamespaceType = typing.NewType(
@@ -90,6 +107,9 @@ def setup_parser(parser: ArgumentParserType) -> ArgumentParserNamespaceType:
         "-v", "--verbosity-level", dest="verbosity_level", action="count"
     )
 
+    parser.add_argument(
+        "-R", "--releases", dest="releases", nargs="+", choices=["R4", "STU3", "DSTU2"]
+    )
     return parser.parse_args()
 
 
@@ -126,7 +146,7 @@ def cmd(func: typing.Callable[[], typing.Any]) -> typing.Callable:
 async def run_cmd(func: typing.Callable[[], typing.Any], args: []) -> int:
     """
     """
-    if isinstance(func, six.string_types):
+    if isinstance(func, (str, bytes)):
 
         func = globals().get(func)
 

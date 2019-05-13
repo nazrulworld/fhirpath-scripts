@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # @Date    : 2018-05-28 12:51:52
 # @Author  : Md Nazrul Islam (email2nazrul@gmail.com)
