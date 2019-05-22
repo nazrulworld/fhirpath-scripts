@@ -3,16 +3,14 @@
 # @Author  : Md Nazrul Islam (email2nazrul@gmail.com)
 # @Link    : http://nazrul.me/
 """Downloader for fhir definition, examples, schema"""
-# @Version : $Id$
-# All imports here
-import os
 import io
 import json
+import os
 import pathlib
+import shutil
 import subprocess
 import tempfile
 import zipfile
-import shutil
 
 from helpers import FHIR_RELEASES
 from helpers import cmd
@@ -45,10 +43,15 @@ async def reduce_fhir_json(destination_dir, output_stream, release):
     if not dest_dir.exists():
         dest_dir.mkdir()
 
-    shutil.copyfile(str(version_info), str(dest_dir / "version.info"))
-
     with zipfile.ZipFile(str(archive_file), "r") as zip_ref:
         zip_ref.extractall(tmp_dir)
+
+    shutil.copyfile(str(version_info), str(dest_dir / "version.info"))
+    search_param_file = "search-parameters.json"
+
+    shutil.copyfile(
+        os.path.join(tmp_dir, search_param_file), str(dest_dir / search_param_file)
+    )
 
     for filename in ["profiles-types.json", "profiles-resources.json"]:
         new_bundle = dict(entry=list())
@@ -93,7 +96,7 @@ async def reduce_fhir_json(destination_dir, output_stream, release):
         del bundle_json["entry"]
         new_bundle.update(bundle_json)
         with open(str(dest_dir / "valuesets.min.json"), "w", encoding="utf-8") as fp:
-            json.dump(new_bundle, fp)
+            json.dump(new_bundle, fp, indent=2)
 
     shutil.rmtree(tmp_dir)
 
