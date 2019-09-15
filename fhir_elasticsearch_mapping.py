@@ -16,8 +16,8 @@ import zipfile
 from collections import defaultdict
 
 import aiohttp
-
 import DateTime
+
 import mappings
 from fhir_parse_resources import BASE_URL
 from fhir_parse_resources import FHIR_SCHEMAS
@@ -200,7 +200,7 @@ async def write_stream(destination_dir, mapped):
             "mapping": {"properties": properties},
         }
         with open(os.path.join(destination_dir, filename), "w") as f:
-            json.dump(data, f, indent=4, sort_keys=True)
+            json.dump(data, f, indent=2, sort_keys=True)
 
 
 @cmd
