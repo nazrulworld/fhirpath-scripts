@@ -18,6 +18,7 @@ __author__ = "Md Nazrul Islam (email2nazrul@gmail.com)"
 
 class FHIR_RELEASES(enum.Enum):
     """ """
+
     R4 = "R4"
     STU3 = "STU3"
     DSTU2 = "DSTU2"
@@ -109,6 +110,16 @@ def setup_parser(parser: ArgumentParserType) -> ArgumentParserNamespaceType:
 
     parser.add_argument(
         "-R", "--releases", dest="releases", nargs="+", choices=["R4", "STU3", "DSTU2"]
+    )
+    parser.add_argument(
+        "-V",
+        "--fhirbase-release",
+        dest="fhirbase_release",
+        nargs="+",
+        choices=["master", "v0.0.4", "v0.0.5", "v0.0.6"],
+    )
+    parser.add_argument(
+        "-x", "--output-format", dest="output_format", choices=["json", "sql", "txt"]
     )
     return parser.parse_args()
 
